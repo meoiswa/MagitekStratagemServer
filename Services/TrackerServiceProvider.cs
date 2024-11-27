@@ -15,7 +15,7 @@ namespace MagitekStratagemServer.Services
             this.loggerFactory = loggerFactory;
             this.logger = loggerFactory.CreateLogger<TrackerServiceProvider>();
 
-            logger.LogInformation("Tracker Service Provider Initialized");
+            logger.LogTrace("Tracker Service Provider Initialized");
         }
 
         public ITrackerService? GetTracker(string fullName)

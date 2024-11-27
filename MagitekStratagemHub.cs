@@ -25,7 +25,7 @@ namespace MagitekStratagemServer.Hubs
 
         public async Task StartTracking(string fullName)
         {
-            logger.LogInformation($"{Context.ConnectionId}: StartTracking: {fullName}");
+            logger.LogDebug($"{Context.ConnectionId}: StartTracking: {fullName}");
             var trackerService = trackerServiceProvider.GetTracker(fullName);
 
             if (trackerService == null || trackerService.IsTracking)
@@ -46,7 +46,7 @@ namespace MagitekStratagemServer.Hubs
 
         public async Task StopTracking(string fullName)
         {
-            logger.LogInformation($"{Context.ConnectionId}: StopTracking: {fullName}");
+            logger.LogDebug($"{Context.ConnectionId}: StopTracking: {fullName}");
             var trackerService = trackerServiceProvider.GetTracker(fullName);
             if (trackerService == null || !trackerService.IsTracking)
             {
@@ -63,7 +63,7 @@ namespace MagitekStratagemServer.Hubs
 
         public async Task GetTrackerServices()
         {
-            logger.LogInformation($"{Context.ConnectionId}: Getting Tracker Services");
+            logger.LogDebug($"{Context.ConnectionId}: Getting Tracker Services");
             var implementations = trackerServiceProvider.ListTrackers()
                 .Select(impl => new { impl.FullName, impl.Name });
             await Clients.Caller.SendAsync("TrackerServices", implementations);

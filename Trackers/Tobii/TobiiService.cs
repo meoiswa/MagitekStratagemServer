@@ -12,6 +12,8 @@ namespace MagitekStratagemServer.Trackers.Tobii
 
         public TobiiService(ILoggerFactory loggerFactory) : base(loggerFactory)
         {
+            StreamEngine.SetLogger(loggerFactory.CreateLogger(nameof(StreamEngine)));
+
             var version = StreamEngine.GetApiVersion();
             logger.LogTrace($"Tobii Stream Engine API Version: {version.major}.{version.minor}.{version.revision}.{version.build}");
 
@@ -27,8 +29,6 @@ namespace MagitekStratagemServer.Trackers.Tobii
             device = api.CreateDevice(urls[0]);
 
             logger.LogTrace(device.ToString());
-
-            logger.LogInformation("Tobii Service Initialized");
         }
 
         public override void DoStartTracking()

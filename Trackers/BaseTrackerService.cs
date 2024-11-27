@@ -27,7 +27,7 @@ internal abstract class BaseTrackerService : ITrackerService
     {
         this.loggerFactory = loggerFactory;
         logger = loggerFactory.CreateLogger(Name);
-        logger.LogInformation($"{Name} Initialized");
+        logger.LogDebug($"{Name} Initialized");
     }
 
     protected void Start(Action<ITrackerService> callback)
@@ -86,21 +86,21 @@ internal abstract class BaseTrackerService : ITrackerService
 
     public void Dispose()
     {
-        logger.LogInformation($"Disposing {Name} Service");
+        logger.LogTrace($"Disposing {Name} Service");
         Stop();
         DoDispose();
     }
 
     public void StartTracking(Action<ITrackerService> callback)
     {
-        logger.LogInformation($"Starting {Name} Tracking");
+        logger.LogTrace($"Starting {Name} Tracking");
         DoStartTracking();
         Start(callback);
     }
 
     public void StopTracking()
     {
-        logger.LogInformation($"Stopping {Name} Tracking");
+        logger.LogTrace($"Stopping {Name} Tracking");
         Stop();
         DoStopTracking();
     }

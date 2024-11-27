@@ -20,7 +20,7 @@ var eyewareDllResolver = app.Services.GetRequiredService<EyewareDllResolver>();
 
 NativeLibrary.SetDllImportResolver(typeof(Program).Assembly, (libraryName, assembly, searchPath) =>
 {
-    logger.LogInformation($"Resolving {libraryName} for {assembly.FullName} from {searchPath}");
+    logger.LogTrace($"Resolving {libraryName} for {assembly.FullName} from {searchPath}");
     if (libraryName == StreamEngine.Library)
     {
         return tobiiDllResolver.ResolveTobiiGameIntegrationDll();

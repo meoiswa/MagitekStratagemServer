@@ -16,13 +16,13 @@ internal class EyewareDllResolver
 
     public IntPtr ResolveEyewareDll()
     {
-        logger.LogInformation($"Searching for Eyeware Tracker Client DLL...");
+        logger.LogTrace($"Searching for Eyeware Tracker Client DLL...");
         var runDir = Path.GetDirectoryName(typeof(Program).Assembly.Location);
 
         if (runDir != null)
         {
             var lib = Path.Join(runDir, "Trackers", "Eyeware", "lib", TrackerClient.Library);
-            logger.LogInformation("Loading Eyeware Tracker Client DLL from " + lib);
+            logger.LogTrace("Loading Eyeware Tracker Client DLL from " + lib);
             try
             {
                 return NativeLibrary.Load(lib);
@@ -34,7 +34,7 @@ internal class EyewareDllResolver
         }
         else
         {
-            logger.LogInformation("Eyeware Tracker Client DLL not found.");
+            logger.LogTrace("Eyeware Tracker Client DLL not found.");
         }
 
         return IntPtr.Zero;

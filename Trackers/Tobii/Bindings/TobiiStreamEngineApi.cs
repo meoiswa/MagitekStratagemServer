@@ -65,6 +65,8 @@ namespace MagitekStratagemServer.Trackers.Tobii.Bindings
             public Vector2D position;
         }
 
+        private static Action<string> Log = (message) => { Console.WriteLine("StreamEngine: " + message); };
+
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate void url_receiver(string url, nint user_data);
 
@@ -135,7 +137,7 @@ namespace MagitekStratagemServer.Trackers.Tobii.Bindings
 
         public static void DestroyApi(nint api)
         {
-            Console.WriteLine("Disposing of Api " + api);
+            Log("Disposing of Api " + api);
             var error = api_destroy(api);
             if (error != Error.NO_ERROR)
             {
@@ -168,7 +170,7 @@ namespace MagitekStratagemServer.Trackers.Tobii.Bindings
 
         public static void DestroyDevice(nint device)
         {
-            Console.WriteLine("Disposing of Device " + device);
+            Log("Disposing of Device " + device);
             var error = device_destroy(device);
             if (error != Error.NO_ERROR)
             {
@@ -187,7 +189,7 @@ namespace MagitekStratagemServer.Trackers.Tobii.Bindings
 
         public static void GazePointUnsubscribe(nint device)
         {
-            Console.WriteLine("Unsusbcribing from Gaze Point " + device);
+            Log("Unsusbcribing from Gaze Point " + device);
             var error = gaze_point_unsubscribe(device);
             if (error != Error.NO_ERROR)
             {
@@ -234,6 +236,11 @@ namespace MagitekStratagemServer.Trackers.Tobii.Bindings
             }
             return deviceName.ToString();
         }
+
+        public static void SetLogger(ILogger logger)
+        {
+            Log = (message) => { logger.LogTrace(message); };
+        }
     }
 
     public abstract class UnmanagedObject : IDisposable
@@ -252,7 +259,6 @@ namespace MagitekStratagemServer.Trackers.Tobii.Bindings
             if (Ptr != nint.Zero)
             {
                 Destroy();
-                Console.WriteLine("Disposed of Unmanaged Object " + GetType());
                 Ptr = nint.Zero;
             }
         }
