@@ -35,7 +35,7 @@ namespace MagitekStratagemServer.Hubs
 
             trackerService.StartTracking((tracker) =>
             {
-                hubContext.Clients.All.SendAsync("TrackerUpdate", tracker.Name, tracker.LastGazeTimestamp, tracker.LastGazeX, tracker.LastGazeY);
+                hubContext.Clients.All.SendAsync("TrackerUpdate", tracker.GetType().FullName, tracker.LastGazeTimestamp, tracker.LastGazeX, tracker.LastGazeY);
             });
 
             if (trackerService.IsTracking)

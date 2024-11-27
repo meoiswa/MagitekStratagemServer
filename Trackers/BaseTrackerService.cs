@@ -34,8 +34,7 @@ internal abstract class BaseTrackerService : ITrackerService
     {
         if (updateThread != null)
         {
-            cancellationToken!.Cancel();
-            updateThread.Join();
+            return;
         }
 
         cancellationToken = new CancellationTokenSource();
@@ -65,14 +64,8 @@ internal abstract class BaseTrackerService : ITrackerService
         if (updateThread != null)
         {
             cancellationToken!.Cancel();
-            try
-            {
-                updateThread.Join();
-            }
-            catch (ThreadStateException)
-            {
-                logger.LogWarning("ThreadStateException caught");
-            }
+            updateThread.Join();
+            updateThread = null;
         }
     }
 

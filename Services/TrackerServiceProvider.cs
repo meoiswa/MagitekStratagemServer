@@ -4,7 +4,7 @@ using MagitekStratagemServer.Trackers.Update;
 
 namespace MagitekStratagemServer.Services
 {
-    public class TrackerServiceProvider : ITrackerServiceProvider
+    public class TrackerServiceProvider : ITrackerServiceProvider, IDisposable
     {
         private Dictionary<string, ITrackerService> trackerServices = new();
         private readonly ILoggerFactory loggerFactory;
@@ -53,6 +53,15 @@ namespace MagitekStratagemServer.Services
 
             logger.LogTrace($"Found {types.Count()} Trackers");
             return types;
+        }
+
+        public void Dispose()
+        {
+            foreach (var tracker in trackerServices.Values)
+            {
+                tracker.Dispose();
+            }
+            trackerServices.Clear();
         }
     }
 }
