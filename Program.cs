@@ -24,22 +24,13 @@ NativeLibrary.SetDllImportResolver(typeof(Program).Assembly, (libraryName, assem
     if (libraryName == StreamEngine.Library)
     {
         return tobiiDllResolver.ResolveTobiiGameIntegrationDll();
-    } else if (libraryName == TrackerClient.Library)
+    }
+    else if (libraryName == TrackerClient.Library)
     {
         return eyewareDllResolver.ResolveEyewareDll();
     }
     return IntPtr.Zero;
 });
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
-
-app.UseHttpsRedirection();
 
 app.UseDefaultFiles();
 
