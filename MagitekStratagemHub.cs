@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.SignalR;
 using MagitekStratagemServer.Services;
-using Microsoft.Extensions.ObjectPool;
 
 namespace MagitekStratagemServer.Hubs
 {
@@ -65,7 +64,11 @@ namespace MagitekStratagemServer.Hubs
         {
             logger.LogDebug($"{Context.ConnectionId}: Getting Tracker Services");
             var implementations = trackerServiceProvider.ListTrackers()
-                .Select(impl => new { impl.FullName, impl.Name });
+                .Select(impl => new TrackerServiceDto
+                {
+                    FullName = impl.FullName,
+                    Name = impl.Name
+                }).ToArray();
             await Clients.Caller.SendAsync("TrackerServices", implementations);
         }
     }

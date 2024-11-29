@@ -1,6 +1,6 @@
-using System.Reflection;
-using MagitekStratagemServer.Attributes;
-using MagitekStratagemServer.Trackers.Update;
+using MagitekStratagemServer.Trackers.Eyeware;
+using MagitekStratagemServer.Trackers.Fake;
+using MagitekStratagemServer.Trackers.Tobii;
 
 namespace MagitekStratagemServer.Services
 {
@@ -25,17 +25,22 @@ namespace MagitekStratagemServer.Services
 
             if (tracker == null)
             {
-                var trackerServiceType = typeof(ITrackerService);
-                var trackerType = Assembly.GetExecutingAssembly().GetTypes()
-                    .Where(t => trackerServiceType.IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract && t.IsAssignableTo(typeof(BaseTrackerService)))
-                    .FirstOrDefault(t => t.FullName == fullName);
-                if (trackerType != null)
+                if (fullName == typeof(TobiiService).FullName)
                 {
-                    tracker = (ITrackerService?)Activator.CreateInstance(trackerType, [loggerFactory]);
-                    if (tracker != null)
-                    {
-                        trackerServices.Add(fullName, tracker);
-                    }
+                    tracker = new TobiiService(loggerFactory);
+                }
+                else if (fullName == typeof(BeamService).FullName)
+                {
+                    tracker = new BeamService(loggerFactory);
+                }
+                else if (fullName == typeof(FakeEyeService).FullName)
+                {
+                    tracker = new FakeEyeService(loggerFactory);
+                }
+
+                if (tracker != null)
+                {
+                    trackerServices[fullName] = tracker;
                 }
             }
 
@@ -47,11 +52,12 @@ namespace MagitekStratagemServer.Services
         public IEnumerable<Type> ListTrackers()
         {
             logger.LogTrace("Listing Trackers");
-            var trackerServiceType = typeof(ITrackerService);
-            var types = Assembly.GetExecutingAssembly().GetTypes()
-                .Where(t => trackerServiceType.IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract && t.IsAssignableTo(typeof(BaseTrackerService)));
-
-            logger.LogTrace($"Found {types.Count()} Trackers");
+            var types = new List<Type>()
+            {
+                typeof(FakeEyeService),
+                typeof(TobiiService),
+                typeof(BeamService),
+            };
             return types;
         }
 

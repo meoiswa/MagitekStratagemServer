@@ -1,5 +1,4 @@
 using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
 
 namespace MagitekStratagemServer.Trackers.Eyeware.Bindings;
 
@@ -17,7 +16,7 @@ internal class EyewareDllResolver
     public IntPtr ResolveEyewareDll()
     {
         logger.LogTrace($"Searching for Eyeware Tracker Client DLL...");
-        var runDir = Path.GetDirectoryName(typeof(Program).Assembly.Location);
+        var runDir = Path.GetDirectoryName(AppContext.BaseDirectory);
 
         if (runDir != null)
         {
